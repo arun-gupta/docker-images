@@ -1,3 +1,12 @@
 # Unofficial Docker Images
 
 Official Docker images for JBoss projects are at https://github.com/jboss-dockerfiles/.
+
+## How to use it ?
+
+This image is not published in any repository and so have to be built explicitly.
+
+. Configure boot2docker as explained in http://blog.arungupta.me/2014/07/getting-started-with-docker/
+. Clone this workspace: `git clone https://github.com/arun-gupta/docker-images.git`
+. For a WildFly image on CentOS, change to `wildfly-centos' directory. For a WildFly image on Ubuntu, change to `wildfly-ubutu' directory.
+. Build the image as `docker build -t wildfly .`
