@@ -1,4 +1,4 @@
-# Unofficial Docker Images
+# Unofficial JBoss/WildFly Docker Images
 
 Official Docker images for JBoss projects are at https://github.com/jboss-dockerfiles/.
 
