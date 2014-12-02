@@ -16,9 +16,6 @@ RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s
 # Set the working directory to jboss' user home directory
 WORKDIR /opt/jboss
 
-# Specify the user which should be used to execute all commands below
-USER jboss
-
 # User root user to install software
 USER root
 
@@ -46,5 +43,4 @@ EXPOSE 8080 9990
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
-CMD ["/opt/jboss/wildfly/bin/standalone.sh -c standalone-full.xml", "-b", "0.0.0.0"]
-
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0"]
