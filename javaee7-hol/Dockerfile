@@ -1,7 +1,8 @@
-FROM arungupta/wildfly-centos
+#FROM arungupta/wildfly-centos
+FROM centos/wildfly
 MAINTAINER Arun Gupta <arungupta@redhat.com>
 
-ADD https://github.com/javaee-samples/javaee7-hol/blob/master/solution/movieplex7-solution.zip?raw=true /opt/jboss/wildfly/standalone/deployments
+ADD https://github.com/javaee-samples/javaee7-hol/blob/master/solution/movieplex7-solution.zip?raw=true /opt/wildfly/standalone/deployments/
 
 # Set the working directory to jboss' user home directory
 #WORKDIR /opt/jboss
