@@ -5,14 +5,16 @@ Official Docker images for JBoss projects are at https://github.com/jboss-docker
 ## How to use it ?
 
 . Configure boot2docker as explained in http://blog.arungupta.me/2014/07/getting-started-with-docker/
-. Get the images
-.. From Docker Hub (recommended)
-... For WildFly 8.2 on CentOS: `docker pull arungupta/wildfly-centos`
-... For WildFly 8.2 on Ubuntu: `docker pull arungupta/wildfly-ubuntu`
-.. From the workspace
-... Clone this workspace: `git clone https://github.com/arun-gupta/docker-images.git`
-... For a WildFly image on CentOS, change to `wildfly-centos' directory. For a WildFly image on Ubuntu, change to `wildfly-ubutu' directory.
-... Build the image as `docker build -t wildfly .`
-. Run the container
-.. If you pulled from Docker Hub: `docker run arungupta/wildfly-centos` or `docker run arungupta/wildfly-ubuntu`
-.. If you built it locally:  `docker run wildfly-centos` or `docker run wildfly-ubuntu`
+
+### Get WildFly images
+. From Docker Hub (recommended)
+.. For WildFly 8.2 on CentOS: `docker pull arungupta/wildfly-centos`
+.. For WildFly 8.2 on Ubuntu: `docker pull arungupta/wildfly-ubuntu`
+. From the workspace
+.. Clone this workspace: `git clone https://github.com/arun-gupta/docker-images.git`
+.. For a WildFly image on CentOS, change to `wildfly-centos' directory. For a WildFly image on Ubuntu, change to `wildfly-ubutu' directory.
+.. Build the image as `docker build -t wildfly .`
+
+### Run WildFly container
+. If you pulled from Docker Hub: `docker run arungupta/wildfly-centos` or `docker run arungupta/wildfly-ubuntu`
+. If you built it locally:  `docker run wildfly-centos` or `docker run wildfly-ubuntu`
