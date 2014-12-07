@@ -23,7 +23,28 @@ echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> Executing the commands"
-$JBOSS_CLI -c --file=`dirname "$0"`/commands.cli
+echo "=> MYSQL_HOST: " $MYSQL_HOST
+echo "=> MYSQL_PORT: " $MYSQL_PORT
+#$JBOSS_CLI -c --file=`dirname "$0"`/commands.cli
+$JBOSS_CLI -c << EOF
+batch
+
+# Add MySQL module
+module add --name=com.mysql --resources=/opt/jboss/wildfly/customization/mysql-connector-java-5.1.31-bin.jar --dependencies=javax.api,javax.transaction.api
+
+# Add MySQL driver
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+
+# Add the datasource
+data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
+
+# Deploy the WAR
+deploy employees.war --force
+deploy temp.war --force
+
+# Execute the batch
+run-batch
+EOF
 
 echo "=> Shutting down WildFly"
 if [ "$JBOSS_MODE" = "standalone" ]; then
