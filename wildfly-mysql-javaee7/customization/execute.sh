@@ -39,8 +39,8 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/customization/mysql-c
 data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 
 # Deploy the WAR
-deploy employees.war --force
-deploy temp.war --force
+deploy /opt/jboss/wildfly/customization/employees.war --force
+deploy /opt/jboss/wildfly/customization/temp.war --force
 
 # Execute the batch
 run-batch
