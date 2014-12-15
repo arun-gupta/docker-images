@@ -1,0 +1,17 @@
+= Java EE 7 sample on WildFly (1 container) + MySQL (1 container)
+
+. Run MySQL container
++
+[source, text]
+----
+docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -d mysql
+----
++
+. Run WildFly container
++
+[source, text]
+----
+docker build -t arungupta/wildfly-mysql-javaee7 .
+docker run --name wildfly --link mysqldb:mysql -d arungupta/wildfly-mysql-javaee7
+----
+
