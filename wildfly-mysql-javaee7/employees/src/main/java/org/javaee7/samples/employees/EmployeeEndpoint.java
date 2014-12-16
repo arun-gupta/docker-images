@@ -28,7 +28,6 @@ public class EmployeeEndpoint {
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
     public Employee get(@PathParam("id") int id) {
-        System.out.println("getWithId: " + id);
         return em
                 .createNamedQuery("Employee.findById", Employee.class)
                 .setParameter("id", id)
