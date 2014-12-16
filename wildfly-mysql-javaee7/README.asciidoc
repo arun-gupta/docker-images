@@ -12,6 +12,9 @@ docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_D
 [source, text]
 ----
 docker build -t arungupta/wildfly-mysql-javaee7 .
-docker run --name wildfly --link mysqldb:mysql -d arungupta/wildfly-mysql-javaee7
+docker run --name wildfly --link mysqldb:db -d arungupta/wildfly-mysql-javaee7
 ----
 
+== Log in to container
+
+`sudo docker exec -it mysqldb bash`
