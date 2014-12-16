@@ -17,7 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "EMPLOYEE_SCHEMA")
 @NamedQueries({
-    @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
+    @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e"),
+    @NamedQuery(name = "Employee.findById", query = "SELECT e FROM Employee e where e.id = :id")
 })
 @XmlRootElement
 public class Employee implements Serializable {
