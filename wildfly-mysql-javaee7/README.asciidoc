@@ -7,6 +7,13 @@
 docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -d mysql
 ----
 +
+. Find the IP address of the container
+=
+[source, text]
+----
+sudo docker inspect -f '{{ .NetworkSettings.IPAddress }}'
+----
++
 . Run WildFly container
 +
 [source, text]
