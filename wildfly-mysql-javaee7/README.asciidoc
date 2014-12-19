@@ -9,7 +9,6 @@ docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_D
 +
 . Find the IP address of the container
 +
-=
 [source, text]
 ----
 sudo docker inspect -f '{{ .NetworkSettings.IPAddress }}' mysqldb
