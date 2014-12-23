@@ -1,6 +1,7 @@
 = Java EE 7 sample on WildFly (1 container) + MySQL (1 container)
 
-== Option 1 (Container Linking)
+== Option 1 (Container Linking using --link)
+Link using fig.yml
 
 . Run MySQL container
 +
@@ -16,9 +17,23 @@ docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_D
 docker run --name mywildfly --link mysqldb:db -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
 ----
 
-== Option 2 (Using Fig)
+== Option 2 (Container Linking using Fig)
 
-Link using fig.yml
+. Install Fig
++
+[source, text]
+----
+curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname-s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
+----
++
+. Pull the images and run the containers as:
++
+[source, text]
+----
+fig up
+----
++
+This starts MySQL and WildFly in two separate container and links them together.
 
 == Option 3 (Explicit host/port)
 
