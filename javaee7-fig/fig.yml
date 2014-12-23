@@ -1,8 +1,0 @@
-db:
-  image: mysql
-web:
-  image: arungupta/wildfly-centos
-  links:
-    - db:db
-  ports:
-    - 8080:8080
