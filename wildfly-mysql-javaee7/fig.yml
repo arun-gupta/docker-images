@@ -1,13 +1,14 @@
-db:
+mysqldb:
   image: mysql:latest
   environment:
     MYSQL_DATABASE: sample
     MYSQL_USER: mysql
     MYSQL_PASSWORD: mysql
     MYSQL_ROOT_PASSWORD: supersecret
-wildfly:
+mywildfly:
   image: arungupta/wildfly-mysql-javaee7
   links:
-    - db:db
+    - mysqldb:db
   ports:
     - 8080:8080
+
