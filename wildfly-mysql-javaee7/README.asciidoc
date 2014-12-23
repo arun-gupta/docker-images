@@ -13,7 +13,6 @@ docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_D
 +
 [source, text]
 ----
-docker build -t arungupta/wildfly-mysql-javaee7 .
 docker run --name mywildfly --link mysqldb:db -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
 ----
 
@@ -40,6 +39,7 @@ docker run --name mywildfly -e MYSQL_HOST=<IP_ADDRESS> -e MYSQL_PORT=5306 -p 808
 
 == Tips
 
+. Build the image locally: `docker build -t arungupta/wildfly-mysql-javaee7 .`
 . Log into the container: `sudo docker exec -it mysqldb bash`
 . Find IP address of the container: `sudo docker inspect -f '{{ .NetworkSettings.IPAddress }}' mysqldb`
 
