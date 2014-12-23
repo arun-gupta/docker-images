@@ -17,6 +17,9 @@ docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_D
 docker run --name mywildfly --link mysqldb:db -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
 ----
 
+More details:
+http://blog.arungupta.me/2014/12/wildfly-javaee7-mysql-link-two-docker-container-techtip65/
+
 == Option 2 (Container Linking using Fig)
 
 . Install Fig
