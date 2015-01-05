@@ -23,5 +23,12 @@ Port `8080` is mapped to `49161` and port `9990` is mapped to `49162`.
 .. Just create the user and bind network interfaces on command-line
 .. Create the user and override CMD to bind all network interfaces. This will keep command-line simple.
 +
-We'll use the second option here with this Dockerfile.
-. as
+We'll use the second option here with https://github.com/arun-gupta/docker-images/blob/master/wildfly-admin/Dockerfile[this Dockerfile].
+. You don't need to build this image though, it is already available as a pre-built image on Docker Hub. Just run it:
++
+[source, text]
+----
+docker run -P -d arungupta/wildfly-admin
+----
++
+. Check the mapped ports using `docker ps`. Access the admin console at the mapped port and use ``admin'' username and ``Admin#007'' password.
