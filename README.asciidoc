@@ -26,7 +26,7 @@ Official Docker images for JBoss projects are at https://github.com/jboss-docker
 ## Java EE 7 Hands-on Lab
 
 . `docker pull arungupta/javaee7-hol`
-. `docker run -it -p 80:8080 arungupta/javaee7-hol`
-. Access application at http://<IP>/movieplex7
+. `docker run -it -p 8080:8080 arungupta/javaee7-hol`
+. Access application at http://<IP>:8080/movieplex7
 
 
