@@ -57,6 +57,10 @@ docker build -t arungupta/wildfly-mysql-javaee7 .
 docker run --name mywildfly -e MYSQL_HOST=<IP_ADDRESS> -e MYSQL_PORT=5306 -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
 ----
 
+== Option 4 (Swarm)
+
+https://github.com/docker/swarm
+
 More details: http://blog.arungupta.me/docker-container-linking-across-multiple-hosts-techtip69/
 
 == Tips
