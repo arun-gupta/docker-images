@@ -38,6 +38,8 @@ fig up
 +
 This starts MySQL and WildFly in two separate container and links them together.
 
+More details: http://blog.arungupta.me/docker-orchestration-fig-techtip67/
+
 == Option 3 (Explicit host/port)
 
 . Expose port `5306` of MySQL
