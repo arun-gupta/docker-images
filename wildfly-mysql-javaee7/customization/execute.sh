@@ -25,8 +25,10 @@ wait_for_server
 echo "=> Executing the commands"
 echo "=> MYSQL_HOST: " $MYSQL_HOST
 echo "=> MYSQL_PORT: " $MYSQL_PORT
-echo "=> MYSQL (host): " $DB_PORT_3306_TCP_ADDR
-echo "=> MYSQL (port): " $DB_PORT_3306_TCP_PORT
+echo "=> MYSQL (docker host): " $DB_PORT_3306_TCP_ADDR
+echo "=> MYSQL (docker port): " $DB_PORT_3306_TCP_PORT
+echo "=> MYSQL (kubernetes host): " $MYSQL_SERVICE_HOST
+echo "=> MYSQL (kubernetes port): " $MYSQL_SERVICE_PORT
 #$JBOSS_CLI -c --file=`dirname "$0"`/commands.cli
 $JBOSS_CLI -c << EOF
 batch
@@ -39,16 +41,15 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/customization/mysql-c
 
 # Add the datasource
 #data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
-
-data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$DB_PORT_3306_TCP_ADDR:$DB_PORT_3306_TCP_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
+data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_SERVICE_HOST:$MYSQL_SERVICE_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
+#data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$DB_PORT_3306_TCP_ADDR:$DB_PORT_3306_TCP_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 
 # Execute the batch
 run-batch
 EOF
 
 # Deploy the WAR
-cp /opt/jboss/wildfly/customization/employees.war $JBOSS_HOME/standalone/deployments/employees.war
-cp /opt/jboss/wildfly/customization/temp.war $JBOSS_HOME/standalone/deployments/temp.war
+cp /opt/jboss/wildfly/customization/employees.war $JBOSS_HOME/$JBOSS_MODE/deployments/employees.war
 
 echo "=> Shutting down WildFly"
 if [ "$JBOSS_MODE" = "standalone" ]; then
