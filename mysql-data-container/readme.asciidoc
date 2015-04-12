@@ -1,0 +1,23 @@
+# MySQL Data-only Docker Container
+
+This image is used to create a data-only container for MySQL.
+
+. Start the data-only container as:
++
+[source, text]
+----
+docker create --name mysql_data arungupta/mysql-data-container
+----
++
+Running these data-only containers is purely optional, although it does not hurt.
++
+. Start the MySQL container as:
++
+[source, text]
+----
+docker run --volumes-from mysql_data --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -d mysql
+----
++
+The important switch here is `--volumes-from`, that allows the MySQL container to use volumes from a data-only container.
+
+That's it!
