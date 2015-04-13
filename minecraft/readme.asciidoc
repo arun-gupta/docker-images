@@ -1,0 +1,13 @@
+# Minecraft Docker Container
+
+. Run the server as:
++
+[source,text]
+----
+docker run -it -p 25565:25565 -e EULA=true arungupta/minecraft
+----
+
+## TODO
+
+. Where is the data directory?
+. Can `spigot-1.8.jar` be generated only once, and used subsequently?
