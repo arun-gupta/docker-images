@@ -2,10 +2,10 @@
 FROM jboss/wildfly
 MAINTAINER Arun Gupta <arungupta@redhat.com>
 
-COPY jrebel.jar $JBOSS_HOME/jrebel.jar
-COPY libjrebel64.so $JBOSS_HOME/libjrebel64.so
+#COPY jrebel.jar $JBOSS_HOME/jrebel.jar
+#COPY libjrebel64.so $JBOSS_HOME/libjrebel64.so
 
-RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Drebel.remoting_plugin=true -agentpath:\$JBOSS_HOME/libjrebel64.so\"" >> $JBOSS_HOME/bin/standalone.conf
+#RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Drebel.remoting_plugin=true -agentpath:\$JBOSS_HOME/libjrebel64.so\"" >> $JBOSS_HOME/bin/standalone.conf
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0"]
 
