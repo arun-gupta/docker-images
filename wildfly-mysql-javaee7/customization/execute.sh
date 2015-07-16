@@ -23,21 +23,20 @@ echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> Executing the commands"
-echo "=> MYSQL_HOST: " $MYSQL_HOST
-echo "=> MYSQL_PORT: " $MYSQL_PORT
+echo "=> MYSQL_HOST (explicit): " $MYSQL_HOST
+echo "=> MYSQL_PORT (explicit): " $MYSQL_PORT
 echo "=> MYSQL (docker host): " $DB_PORT_3306_TCP_ADDR
 echo "=> MYSQL (docker port): " $DB_PORT_3306_TCP_PORT
-echo "=> MYSQL (k8s host): " $MYSQL_SERVICE_HOST
-echo "=> MYSQL (k8s port): " $MYSQL_SERVICE_PORT
+echo "=> MYSQL (k8s host): " $MYSQL_SERVICE_SERVICE_HOST
+echo "=> MYSQL (k8s port): " $MYSQL_SERVICE_SERVICE_PORT
 
-#CONNECTION_URL="jdbc:mysql://${MYSQL_SERVICE_HOST:=$DB_PORT_3306_TCP_ADDR}:${MYSQL_SERVICE_PORT:=$DB_PORT_3306_TCP_PORT}/sample?useUnicode=true&amp;characterEncoding=UTF-8"
-echo "Connection URL: " $CONNECTION_URL
+#CONNECTION_URL="jdbc:mysql://${MYSQL_SERVICE_SERVICE_HOST:=$DB_PORT_3306_TCP_ADDR}:${MYSQL_SERVICE_SERVICE_PORT:=$DB_PORT_3306_TCP_PORT}/sample"
 
-#$JBOSS_CLI -c --file=`dirname "$0"`/commands.cli
 $JBOSS_CLI -c << EOF
 batch
 
-CONNECTION_URL="jdbc:mysql://${MYSQL_SERVICE_HOST:=$DB_PORT_3306_TCP_ADDR}:${MYSQL_SERVICE_PORT:=$DB_PORT_3306_TCP_PORT}/sample"
+set CONNECTION_URL=jdbc:mysql://$MYSQL_SERVICE_SERVICE_HOST:$MYSQL_SERVICE_SERVICE_PORT/sample
+echo "Connection URL: " $CONNECTION_URL
 
 # Add MySQL module
 module add --name=com.mysql --resources=/opt/jboss/wildfly/customization/mysql-connector-java-5.1.31-bin.jar --dependencies=javax.api,javax.transaction.api
@@ -49,7 +48,7 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/customization/mysql-c
 #data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_HOST:$MYSQL_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 #data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_SERVICE_HOST:$MYSQL_SERVICE_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 #data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$DB_PORT_3306_TCP_ADDR:$DB_PORT_3306_TCP_PORT/sample?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
-data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=${CONNECTION_URL} --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
+data-source add --name=mysqlDS --driver-name=mysql --jndi-name=java:jboss/datasources/ExampleMySQLDS --connection-url=jdbc:mysql://$MYSQL_SERVICE_SERVICE_HOST:$MYSQL_SERVICE_SERVICE_PORT/sample --user-name=mysql --password=mysql --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 
 # Execute the batch
 run-batch
