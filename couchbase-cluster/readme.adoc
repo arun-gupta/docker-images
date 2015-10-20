@@ -1,0 +1,58 @@
+= Couchbase Cluster using Docker
+
+. Create directories:
+
+  mkdir -p ~/couchbase/node1 ~/couchbase/node2 ~/couchbase/node3
+
+. Start the cluster:
++
+  docker-compose up -d
++
+It shows the output:
++
+[source, text]
+----
+Creating couchbasecluster_couchbase1_1
+Creating couchbasecluster_couchbase3_1
+Creating couchbasecluster_couchbase2_1
+----
++
+. Verify that all the servers are started successfully by giving the command `docker ps`:
++
+[source, text]
+----
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                                               NAMES
+900ede6489d0        couchbase/server    "/entrypoint.sh couch"   14 minutes ago      Up 4 minutes        8091-8093/tcp, 11207/tcp, 11210-11211/tcp, 18091-18092/tcp                                          couchbasecluster_couchbase2_1
+17b295102c6c        couchbase/server    "/entrypoint.sh couch"   14 minutes ago      Up 4 minutes        0.0.0.0:8091-8093->8091-8093/tcp, 11207/tcp, 11211/tcp, 0.0.0.0:11210->11210/tcp, 18091-18092/tcp   couchbasecluster_couchbase3_1
+899781aafc56        couchbase/server    "/entrypoint.sh couch"   14 minutes ago      Up 4 minutes        8091-8093/tcp, 11207/tcp, 11210-11211/tcp, 18091-18092/tcp                                          couchbasecluster_couchbase1_1
+----
++
+. Find IP address of Docker Machine:
+
+  docker-machine ip default
+
+. Access Admin Console at http://<DOCKER_MACHINE_IP>:8091
+. Click on '`Setup`' button
+. Find IP address of the container:
+
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}' couchbasecluster_couchbase3_1
+
+. In '`Hostname`' field, enter IP address of the container.
+. Click on '`Next`'. Install any of the sample buckets, if you want to. Click on '`Next`'.
+. This cluster will have three servers and so allocate '`Per Node RAM Quota`' such that there is spare for other servers as well. Click '`Next`'.
+. Agree to T&C and click '`Next`'.
+. Choose a password that you'll remember and click on '`Next`'.
+. Click on `'Server Nodes'` tab, click on `'Add Servers'` button.
+. Perform the following steps for the remaining servers:
+.. Find IP address of the container:
++
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}' <server_name>
++
+Server names are: "`couchbasecluster_couchbase2_1`" and "`couchbasecluster_couchbase1_1`".
++
+.. In Admin Console, specify the container IP address in '`Server IP Address`' field.
+.. Specify the administrator password created above
+.. Click on '`Add Server`'
+.. All data from the server is remove if it joins a cluster. This warning message is shown, click on '`Add Server`' to accept the message.
+. Click on '`Rebalance`' to rebalance the cluster. The servers are now part of the cluster.
+
