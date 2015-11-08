@@ -1,0 +1,3 @@
+mywildfly:
+  ports:
+    - 9080:8080
