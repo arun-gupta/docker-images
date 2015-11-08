@@ -1,4 +1,5 @@
 mysqldb:
+  container_name: "db"
   image: mysql:latest
   environment:
     MYSQL_DATABASE: sample
@@ -7,8 +8,8 @@ mysqldb:
     MYSQL_ROOT_PASSWORD: supersecret
 mywildfly:
   image: arungupta/wildfly-mysql-javaee7
-  links:
-    - mysqldb:db
+  environment:
+    - MYSQL_URI=db:3306
   ports:
     - 8080:8080
 
