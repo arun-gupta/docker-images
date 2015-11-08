@@ -1,65 +1,14 @@
-= Java EE 7 sample on WildFly (1 container) + MySQL (1 container)
+= Docker Containers using Bridge and Overlay Network
 
-== Option 1 (Container Linking using --link)
-Link using fig.yml
+This is a Java EE application deployed on WildFly and uses MySQL database.
 
-. Run MySQL container
-+
-[source, text]
-----
-docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -d mysql
-----
-+
-. Run WildFly container and link to MySQL container
-+
-[source, text]
-----
-docker run --name mywildfly --link mysqldb:db -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
-----
+== Docker Containers using Bridge Network
 
-More details:
-http://blog.arungupta.me/2014/12/wildfly-javaee7-mysql-link-two-docker-container-techtip65/
+```console
+docker-compose --x-networking up -d
+```
 
-== Option 2 (Container Linking using Fig)
-
-. Install Fig
-+
-[source, text]
-----
-curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname-s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
-----
-+
-. Pull the images and run the containers as:
-+
-[source, text]
-----
-fig up
-----
-+
-This starts MySQL and WildFly in two separate container and links them together.
-
-More details: http://blog.arungupta.me/docker-orchestration-fig-techtip67/
-
-== Option 3 (Explicit host/port)
-
-. Expose port `5306` of MySQL
-+
-[source, text]
-----
-docker run --name mysqldb -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -p 5306:3306 --ip-forward=1 -d mysql
-----
-+
-. Run WildFly container and use the host/forwarded port of MySQL container
-+
-[source, text]
-----
-docker build -t arungupta/wildfly-mysql-javaee7 .
-docker run --name mywildfly -e MYSQL_HOST=<IP_ADDRESS> -e MYSQL_PORT=5306 -p 8080:8080 -d arungupta/wildfly-mysql-javaee7
-----
-
-== Option 4 (Swarm)
-
-https://github.com/docker/swarm
+== Docker Containers using Overlay Network
 
 More details: http://blog.arungupta.me/docker-container-linking-across-multiple-hosts-techtip69/
 
