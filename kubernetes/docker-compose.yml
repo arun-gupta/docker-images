@@ -1,15 +1,28 @@
 etcd:
   image: gcr.io/google_containers/etcd:2.0.9
   net: "host"
-  entrypoint: /usr/local/bin/etcd --addr=127.0.0.1:4001 --bind-addr=0.0.0.0:4001 --data-dir=/var/etcd/data
+  command: /usr/local/bin/etcd --addr=127.0.0.1:4001 --bind-addr=0.0.0.0:4001 --data-dir=/var/etcd/data
 master:
   image: gcr.io/google_containers/hyperkube:v0.21.2
   net: "host"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-  entrypoint: /hyperkube kubelet --api_servers=http://localhost:8080 --v=2 --address=0.0.0.0 --enable_server --hostname_override=127.0.0.1 --config=/etc/kubernetes/manifests
+  command: /hyperkube kubelet --api_servers=http://localhost:8080 --v=2 --address=0.0.0.0 --enable_server --hostname_override=127.0.0.1 --config=/etc/kubernetes/manifests --cluster-dns=10.0.2.15 --cluster-domain=kubernetes.local
 proxy:
   image: gcr.io/google_containers/hyperkube:v0.21.2
   net: "host"
   privileged: true
-  entrypoint: /hyperkube proxy --master=http://127.0.0.1:8080 --v=2
+  command: /hyperkube proxy --master=http://127.0.0.1:8080 --v=2
+kube2sky:
+  image: gcr.io/google_containers/kube2sky:1.11
+  net: "host"
+  privileged: true
+  command: -v=10 -logtostderr=true -domain=kubernetes.local -etcd-server="http://127.0.0.1:4001"
+skydns:
+  image: gcr.io/google_containers/skydns:2015-03-11-001
+  net: "host"
+  environment:
+    SKYDNS_DOMAIN: 'kubernetes.local'
+    SKYDNS_ADDR: '0.0.0.0:53'
+    SKYDNS_NAMESERVERS: '8.8.8.8:53,8.8.4.4:53'
+    ETCD_MACHINES: 'http://127.0.0.1:4001'
