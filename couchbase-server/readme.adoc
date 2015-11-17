@@ -1,0 +1,4 @@
+This Docker Compose file can be used to start a Couchbase server.
+
+. Create a directory `mkdir ~/couchbase`
+. Start the Couchbase server `docker-compose up -d`
