@@ -2,3 +2,30 @@ This Docker Compose file can be used to start a Couchbase server.
 
 . Create a directory `mkdir ~/couchbase`
 . Start the Couchbase server `docker-compose up -d`
+
+Configure programatically:
+
+. Setup username and password:
++
+```console
+curl -u admin:password -d username=Administrator -d password=letmein -d port=8091 http://192.168.99.100:8091/settings/web
+{"newBaseUri":"http://192.168.99.100:8091/"}
+```
++
+. Install sample bucket
++
+```console
+curl -u Administrator:letmein -X POST http://192.168.99.100:8091/sampleBuckets/install -d '["travel-sample"]'
+[]
+```
++
+. Query the bucket
++
+```console
+curl -u Administrator:letmein http://192.168.99.100:8091/pools/default/buckets
+[{"name":"travel-sample","bucketType":"membase","authType":"sasl","saslPassword":"","proxyPort":0,"replicaIndex":false,"uri":"/pools/default/buckets/travel-sample?bucket_uuid=026dba49f522c47daddb4365f36e9f6a","streamingUri":"/pools/default/bucketsStreaming/travel-sample?bucket_uuid=026dba49f522c47daddb4365f36e9f6a",
+
+. . .
+
+"replicaNumber":1,"threadsNumber":3,"quota":{"ram":104857600,"rawRAM":104857600},"basicStats":{"quotaPercentUsed":73.14761352539062,"opsPerSec":0,"diskFetches":0,"itemCount":31569,"diskUsed":134168613,"dataUsed":110003507,"memUsed":76700832},"evictionPolicy":"valueOnly","bucketCapabilitiesVer":"","bucketCapabilities":["cbhello","touch","couchapi","cccp","xdcrCheckpointing","nodesExt","dcp"]}]
+```
