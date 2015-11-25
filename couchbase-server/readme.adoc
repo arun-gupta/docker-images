@@ -1,14 +1,14 @@
 This Docker Compose file can be used to start a Couchbase server.
 
 . Create a directory `mkdir ~/couchbase`
-. Start the Couchbase server:
+. Start Couchbase server:
 +
 ```console
 docker-compose up -d
 Creating couchbaseserver_mycouchbase_1
 ```
 +
-. Configure programatically
+. Configure using REST API
 .. Get IP address of Docker host:
 +
 ```console
@@ -126,5 +126,59 @@ curl -v -u Administrator:password -X POST http://192.168.99.100:8091/sampleBucke
 < 
 * Connection #0 to host 192.168.99.100 left intact
 []
+```
+. Query using CBQ
+.. List the container id of Couchbase server:
++
+```console
+docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                                               NAMES
+07fd92c24687        couchbase/server    "/entrypoint.sh couch"   6 minutes ago       Up 6 minutes        0.0.0.0:8091-8093->8091-8093/tcp, 11207/tcp, 11211/tcp, 0.0.0.0:11210->11210/tcp, 18091-18092/tcp   couchbaseserver_mycouchbase_1
+```
++
+Alternatively, just the container id can be obtained as:
++
+```console
+docker ps | grep couch | awk '{print $1}'
+```
++
+.. Run Couchbase Query tool:
++
+```console
+docker exec -it 07 /opt/couchbase/bin/cbq
+Couchbase query shell connected to http://localhost:8093/ . Type Ctrl-D to exit.
+cbq> 
+```
++
+.. Run a query:
++
+```console
+cbq> select * from `travel-sample` limit 1;
+{
+    "requestID": "be53c0ef-b5b1-4268-825f-1355dbe99afb",
+    "signature": {
+        "*": "*"
+    },
+    "results": [
+        {
+            "travel-sample": {
+                "callsign": "AIRFRANS",
+                "country": "France",
+                "iata": "AF",
+                "icao": "AFR",
+                "id": 137,
+                "name": "Air France",
+                "type": "airline"
+            }
+        }
+    ],
+    "status": "success",
+    "metrics": {
+        "elapsedTime": "18.963003ms",
+        "executionTime": "18.919405ms",
+        "resultCount": 1,
+        "resultSize": 293
+    }
+}
 ```
 
