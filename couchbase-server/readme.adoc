@@ -73,7 +73,7 @@ curl -v -u Administrator:password http://192.168.99.100:8091/node/controller/set
 .. Setup cluster Data and Index memory:
 +
 ```console
-curl -v -u Administrator:password http://192.168.99.100:8091/nodes/self/controller/settings -d clusterRamsize=200 -d clusterIndexRamsize=200
+curl -v -u Administrator:password http://192.168.99.100:8091/nodes/self/controller/settings -d clusterRamsize=256 -d clusterIndexRamsize=256
 * Hostname was NOT found in DNS cache
 *   Trying 192.168.99.100...
 * Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
