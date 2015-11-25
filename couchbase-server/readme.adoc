@@ -1,31 +1,130 @@
 This Docker Compose file can be used to start a Couchbase server.
 
 . Create a directory `mkdir ~/couchbase`
-. Start the Couchbase server `docker-compose up -d`
-
-Configure programatically:
-
-. Setup username and password:
+. Start the Couchbase server:
 +
 ```console
-curl -u admin:password -d username=Administrator -d password=letmein -d port=8091 http://192.168.99.100:8091/settings/web
-{"newBaseUri":"http://192.168.99.100:8091/"}
+docker-compose up -d
+Creating couchbaseserver_mycouchbase_1
 ```
 +
-. Install sample bucket
+. Configure programatically
+.. Get IP address of Docker host:
 +
 ```console
-curl -u Administrator:letmein -X POST http://192.168.99.100:8091/sampleBuckets/install -d '["travel-sample"]'
+docker-machine ip default
+192.168.99.100
+```
++
+.. Configure memory for Data and Index services:
++
+```console
+curl -v -X POST http://192.168.99.100:8091/pools/default -d memoryQuota=300 -d indexMemoryQuota=300
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+> POST /pools/default HTTP/1.1
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 36
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 36 out of 36 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Wed, 25 Nov 2015 05:03:35 GMT
+< Content-Length: 0
+< Cache-Control: no-cache
+< 
+* Connection #0 to host 192.168.99.100 left intact
+```
++
+.. Configure Data, Query, and Index services:
++
+```console
+curl -v -u Administrator:password http://192.168.99.100:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+* Server auth using Basic with user 'Administrator'
+> POST /node/controller/setupServices HTTP/1.1
+> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 26
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 26 out of 26 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Wed, 25 Nov 2015 05:05:07 GMT
+< Content-Length: 0
+< Cache-Control: no-cache
+< 
+* Connection #0 to host 192.168.99.100 left intact
+```
++
+.. Setup cluster Data and Index memory:
++
+```console
+curl -v -u Administrator:password http://192.168.99.100:8091/nodes/self/controller/settings -d clusterRamsize=200 -d clusterIndexRamsize=200
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+* Server auth using Basic with user 'Administrator'
+> POST /nodes/self/controller/settings HTTP/1.1
+> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 42
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 42 out of 42 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Wed, 25 Nov 2015 05:07:29 GMT
+< Content-Length: 0
+< Cache-Control: no-cache
+< 
+* Connection #0 to host 192.168.99.100 left intact
+```
++
+.. Install `travel-sample` bucket:
++
+```console
+curl -v -u Administrator:password -X POST http://192.168.99.100:8091/sampleBuckets/install -d '["travel-sample"]'
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+* Server auth using Basic with user 'Administrator'
+> POST /sampleBuckets/install HTTP/1.1
+> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 17
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 17 out of 17 bytes
+< HTTP/1.1 202 Accepted
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Wed, 25 Nov 2015 05:09:36 GMT
+< Content-Type: application/json
+< Content-Length: 2
+< Cache-Control: no-cache
+< 
+* Connection #0 to host 192.168.99.100 left intact
 []
 ```
-+
-. Query the bucket
-+
-```console
-curl -u Administrator:letmein http://192.168.99.100:8091/pools/default/buckets
-[{"name":"travel-sample","bucketType":"membase","authType":"sasl","saslPassword":"","proxyPort":0,"replicaIndex":false,"uri":"/pools/default/buckets/travel-sample?bucket_uuid=026dba49f522c47daddb4365f36e9f6a","streamingUri":"/pools/default/bucketsStreaming/travel-sample?bucket_uuid=026dba49f522c47daddb4365f36e9f6a",
 
-. . .
-
-"replicaNumber":1,"threadsNumber":3,"quota":{"ram":104857600,"rawRAM":104857600},"basicStats":{"quotaPercentUsed":73.14761352539062,"opsPerSec":0,"diskFetches":0,"itemCount":31569,"diskUsed":134168613,"dataUsed":110003507,"memUsed":76700832},"evictionPolicy":"valueOnly","bucketCapabilitiesVer":"","bucketCapabilities":["cbhello","touch","couchapi","cccp","xdcrCheckpointing","nodesExt","dcp"]}]
-```
