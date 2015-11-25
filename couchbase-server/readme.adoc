@@ -31,27 +31,28 @@ curl -v -X POST http://192.168.99.100:8091/pools/default -d memoryQuota=300 -d i
 > Content-Type: application/x-www-form-urlencoded
 > 
 * upload completely sent off: 36 out of 36 bytes
-< HTTP/1.1 200 OK
+< HTTP/1.1 401 Unauthorized
+< WWW-Authenticate: Basic realm="Couchbase Server Admin / REST"
 * Server Couchbase Server is not blacklisted
 < Server: Couchbase Server
 < Pragma: no-cache
-< Date: Wed, 25 Nov 2015 22:02:02 GMT
+< Date: Wed, 25 Nov 2015 22:48:16 GMT
 < Content-Length: 0
 < Cache-Control: no-cache
 < 
 * Connection #0 to host 192.168.99.100 left intact
 ```
 +
+This should not be required to be done explicitly and has been filed as a TBD LINK.
++
 .. Configure Data, Query, and Index services:
 +
 ```console
-curl -v -u Administrator:password http://192.168.99.100:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
+curl -v http://192.168.99.100:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
 * Hostname was NOT found in DNS cache
 *   Trying 192.168.99.100...
 * Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
-* Server auth using Basic with user 'Administrator'
 > POST /node/controller/setupServices HTTP/1.1
-> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
 > User-Agent: curl/7.37.1
 > Host: 192.168.99.100:8091
 > Accept: */*
@@ -63,14 +64,14 @@ curl -v -u Administrator:password http://192.168.99.100:8091/node/controller/set
 * Server Couchbase Server is not blacklisted
 < Server: Couchbase Server
 < Pragma: no-cache
-< Date: Wed, 25 Nov 2015 22:02:25 GMT
+< Date: Wed, 25 Nov 2015 22:49:51 GMT
 < Content-Length: 0
 < Cache-Control: no-cache
 < 
 * Connection #0 to host 192.168.99.100 left intact
 ```
 +
-.. Setup cluster Data and Index memory:
+.. Setup credentials for the cluster:
 +
 ```console
 curl -v -X POST http://192.168.99.100:8091/settings/web -d port=8091 -d username=Administrator -d password=password
@@ -89,7 +90,7 @@ curl -v -X POST http://192.168.99.100:8091/settings/web -d port=8091 -d username
 * Server Couchbase Server is not blacklisted
 < Server: Couchbase Server
 < Pragma: no-cache
-< Date: Wed, 25 Nov 2015 22:02:43 GMT
+< Date: Wed, 25 Nov 2015 22:50:43 GMT
 < Content-Type: application/json
 < Content-Length: 44
 < Cache-Control: no-cache
@@ -119,7 +120,7 @@ curl -v -u Administrator:password -X POST http://192.168.99.100:8091/sampleBucke
 * Server Couchbase Server is not blacklisted
 < Server: Couchbase Server
 < Pragma: no-cache
-< Date: Wed, 25 Nov 2015 22:03:03 GMT
+< Date: Wed, 25 Nov 2015 22:51:51 GMT
 < Content-Type: application/json
 < Content-Length: 2
 < Cache-Control: no-cache
