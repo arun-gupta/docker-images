@@ -1,0 +1,164 @@
+= Java EE 7 sample with WildFly and Couchbase
+
+. Start WildFly and Couchbase server:
++
+```console
+docker-compose --x-networking up -d
+Creating network "wildflycouchbasejavaee7" with driver "None"
+Creating wildflycouchbasejavaee7_mywildfly_1
+Creating db
+```
++
+. Clone https://github.com/arun-gupta/couchbase-javaee[couchbase-javaee repo]:
++
+```console
+git clone https://github.com/arun-gupta/couchbase-javaee
+```
++
+. Configure Couchbase:
++
+```console
+mvn install -Pcouchbase
+[INFO] --- exec-maven-plugin:1.4.0:exec (Configure memory) @ couchbase-javaee ---
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+> POST /pools/default HTTP/1.1
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 36
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [data not shown]
+* upload completely sent off: 36 out of 36 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Thu, 26 Nov 2015 13:17:23 GMT
+< Content-Length: 0
+< Cache-Control: no-cache
+< 
+100    36    0     0  100    36      0  18937 --:--:-- --:--:-- --:--:-- 36000
+* Connection #0 to host 192.168.99.100 left intact
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:exec (Configure services) @ couchbase-javaee ---
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+> POST /node/controller/setupServices HTTP/1.1
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 26
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [data not shown]
+* upload completely sent off: 26 out of 26 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Thu, 26 Nov 2015 13:17:23 GMT
+< Content-Length: 0
+< Cache-Control: no-cache
+< 
+100    26    0     0  100    26      0  17723 --:--:-- --:--:-- --:--:-- 26000
+* Connection #0 to host 192.168.99.100 left intact
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:exec (Setup credentials) @ couchbase-javaee ---
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+> POST /settings/web HTTP/1.1
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 50
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [data not shown]
+* upload completely sent off: 50 out of 50 bytes
+< HTTP/1.1 200 OK
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Thu, 26 Nov 2015 13:17:23 GMT
+< Content-Type: application/json
+< Content-Length: 44
+< Cache-Control: no-cache
+< 
+{ [data not shown]
+100    94  100    44  100    50   7116   8086 --:--:-- --:--:-- --:--:--  8333
+* Connection #0 to host 192.168.99.100 left intact
+{"newBaseUri":"http://192.168.99.100:8091/"}[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:exec (Install travel-sample bucket) @ couchbase-javaee ---
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to 192.168.99.100 (192.168.99.100) port 8091 (#0)
+* Server auth using Basic with user 'Administrator'
+> POST /sampleBuckets/install HTTP/1.1
+> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8091
+> Accept: */*
+> Content-Length: 17
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [data not shown]
+* upload completely sent off: 17 out of 17 bytes
+< HTTP/1.1 202 Accepted
+* Server Couchbase Server is not blacklisted
+< Server: Couchbase Server
+< Pragma: no-cache
+< Date: Thu, 26 Nov 2015 13:17:23 GMT
+< Content-Type: application/json
+< Content-Length: 2
+< Cache-Control: no-cache
+< 
+{ [data not shown]
+100    19  100     2  100    17     50    425 --:--:-- --:--:-- --:--:--   435
+* Connection #0 to host 192.168.99.100 left intact
+```
++
+. Deploy the project:
++
+```console
+mvn install -Pwildfly -Dwildfly.hostname=192.168.99.100 -Dusername=admin -Dpassword=Admin#007
+```
++
+. GET 10 Airline resource
++
+```console
+curl -v http://192.168.99.100:8080/couchbase-javaee/resources/airline
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.99.100...
+* Connected to 192.168.99.100 (192.168.99.100) port 8080 (#0)
+> GET /couchbase-javaee/resources/airline HTTP/1.1
+> User-Agent: curl/7.37.1
+> Host: 192.168.99.100:8080
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Connection: keep-alive
+< X-Powered-By: Undertow/1
+* Server WildFly/8 is not blacklisted
+< Server: WildFly/8
+< Content-Type: application/octet-stream
+< Content-Length: 1393
+< Date: Thu, 26 Nov 2015 13:18:36 GMT
+< 
+* Connection #0 to host 192.168.99.100 left intact
+[{"travel-sample":{"id":112,"iata":"5W","icao":"AEU","name":"Astraeus","callsign":"FLYSTAR","type":"airline","country":"United Kingdom"}}, {"travel-sample":{"id":109,"iata":"KO","icao":"AER","name":"Alaska Central Express","callsign":"ACE AIR","type":"airline","country":"United States"}}, {"travel-sample":{"id":1191,"iata":"UU","icao":"REU","name":"Air Austral","callsign":"REUNION","type":"airline","country":"France"}}, {"travel-sample":{"id":1203,"iata":"A5","icao":"RLA","name":"Airlinair","callsign":"AIRLINAIR","type":"airline","country":"France"}}, {"travel-sample":{"id":10642,"iata":null,"icao":"JRB","name":"Jc royal.britannica","callsign":null,"type":"airline","country":"United Kingdom"}}, {"travel-sample":{"id":13633,"iata":"WQ","icao":"PQW","name":"PanAm World Airways","callsign":null,"type":"airline","country":"United States"}}, {"travel-sample":{"id":137,"iata":"AF","icao":"AFR","name":"Air France","callsign":"AIRFRANS","type":"airline","country":"France"}}, {"travel-sample":{"id":10748,"iata":"ZQ","icao":"LOC","name":"Locair","callsign":"LOCAIR","type":"airline","country":"United States"}}, {"travel-sample":{"id":10,"iata":"Q5","icao":"MLA","name":"40-Mile Air","callsign":"MILE-AIR","type":"airline","country":"United States"}}, {"travel-sample":{"id":10226,"iata":"A1","icao":"A1F","name":"Atifly","callsign":"atifly","type":"airline","country":"United States"}}]
+```
++
+See the complete set of REST API at https://github.com/arun-gupta/couchbase-javaee.
