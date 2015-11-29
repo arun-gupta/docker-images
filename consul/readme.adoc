@@ -1,0 +1,21 @@
+= Start Consul Docker Image
+
+Starting this image on a Docker Swarm cluster shows:
+
+```console
+consul > docker-compose up -d
+Pulling myconsul (progrium/consul:latest)...
+swarm-node-01: Pulling progrium/consul:latest... : downloaded
+swarm-master: Pulling progrium/consul:latest... : downloaded
+swarm-node-02: Pulling progrium/consul:latest... : downloaded
+Creating consul_myconsul_1
+```
+
+Checkin the status of container:
+
+```console
+consul > docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                                   NAMES
+3e108d01c925        progrium/consul     "/bin/start -server -"   5 seconds ago       Up 4 seconds        53/tcp, 53/udp, 8300-8302/tcp, 8301-8302/udp, 8400/tcp, 192.168.99.107:8500->8500/tcp   swarm-node-01/consul_myconsul_1
+```
+
