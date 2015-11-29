@@ -1,0 +1,7 @@
+myconsul:
+  image: progrium/consul
+  restart: always
+  hostname: consul
+  ports:
+    - 8500:8500
+  command: "-server -bootstrap"
