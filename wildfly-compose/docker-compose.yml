@@ -1,0 +1,6 @@
+mywildfly:
+  image: jboss/wildfly
+  volumes:
+    - ~/deployments/:/opt/jboss/wildfly/standalone/deployments/:rw
+  ports:
+    - 8080:8080
