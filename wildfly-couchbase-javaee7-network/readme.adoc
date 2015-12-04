@@ -1,0 +1,17 @@
+= Java EE 7 sample with WildFly and Couchbase
+
+== Create a network
+
+```
+docker network create -d bridge mynet
+```
+
+Instructions at https://github.com/arun-gupta/couchbase-javaee.
+
+Start the application as:
+
+```
+NETWORK=mynet docker-compose up -d
+```
+
+
