@@ -1,0 +1,14 @@
+mycouchbase:
+  container_name: "db"
+  image: couchbase/server
+  ports:
+    - 8091:8091
+    - 8092:8092 
+    - 8093:8093 
+    - 11210:11210
+mywildfly:
+  image: websphere-liberty
+  environment:
+    - LICENSE=accept
+  ports:
+    - 80:9080
