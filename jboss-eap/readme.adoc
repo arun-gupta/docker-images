@@ -7,11 +7,11 @@ There is no publicly accessible Docker image for JBoss EAP 7. This workspace sho
 Before you can build the image, download JBoss EAP 7 from http://www.jboss.org/products/eap/download/ in this directory.
 
 ```
-docker build -t arungupta/jboss-eap .
+docker build -t arungupta/jboss-eap:7-beta .
 ```
 
 == Run the Image
 
 ```
-docker run -it -p 8080:8080 arungupta/jboss-eap
+docker run -it -p 8080:8080 arungupta/jboss-eap:7-beta
 ```
