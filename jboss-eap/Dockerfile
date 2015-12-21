@@ -16,6 +16,9 @@ RUN cd $HOME \
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
 
+# Add a user in administration realm
+RUN /opt/jboss/jboss-eap-7.0/bin/add-user.sh admin Admin#007 --silent
+
 # Expose the ports we're interested in
 EXPOSE 8080 9990
 
