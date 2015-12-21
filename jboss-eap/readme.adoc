@@ -1,0 +1,17 @@
+= JBoss EAP 7 Docker Image
+
+There is no publicly accessible Docker image for JBoss EAP 7. This workspace shows how to create your own Docker image for JBoss EAP 7.
+
+== Build the Image
+
+Before you can build the image, download JBoss EAP 7 from http://www.jboss.org/products/eap/download/ in this directory.
+
+```
+docker build -t arungupta/jboss-eap .
+```
+
+== Run the Image
+
+```
+docker run -it -p 8080:8080 arungupta/jboss-eap
+```
