@@ -10,6 +10,11 @@ Before you can build the image, download JBoss EAP 7 from http://www.jboss.org/p
 docker build -t arungupta/jboss-eap:7-beta .
 ```
 
+A user is added in the admin realm with the following credentials:
+
+Name: `admin`
+Password: `Admin#007`
+
 == Run the Image
 
 ```
