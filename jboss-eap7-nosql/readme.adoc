@@ -1,0 +1,3 @@
+= Java EE 7 sample with JBoss EAP and NoSQL
+
+Instructions at https://github.com/arun-gupta/couchbase-javaee.
