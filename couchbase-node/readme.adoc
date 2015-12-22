@@ -96,4 +96,6 @@ Questions:
 . 8091 and 8093 ports need to be exposed in order for the application to access the cluster. It can be from one container, ideally all of them. What do you recommend so that there is no port conflict?
 . How do I ensure that only one instance of Couchbase container is started on Docker Swarm node? Scheduling strategy?
 . Are there any pre/post scripts that can be automatically run after Compose scaling? Otherwise scaling would always require manual script invocation.
+. How do other databases scale, e.g. MySQL? Any existing recipes?
+
 
