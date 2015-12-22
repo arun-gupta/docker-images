@@ -45,6 +45,7 @@ docker build -t arungupta/couchbase-node .
 
   docker-machine ssh swarm-node-02
 
+.. Question: None of the ports are exposed and so have to login to configure Couchbase servers. How can I expose the ports (without conflict) and configure them from the client?
 . Get IP address of all the Couchbase containers:
 
   docker inspect --format '{{ .NetworkSettings.IPAddress }}' {CID}
