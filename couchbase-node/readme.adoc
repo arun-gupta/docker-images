@@ -1,6 +1,6 @@
 = Couchbase Cluster using Docker
 
-Build the image:
+Build the image (only for dev, otherwise already available in Docker Hub):
 
 ```console
 docker build -t arungupta/couchbase-node .
