@@ -56,11 +56,8 @@ docker /
   -d overlay /
   couchbase-net
 
-# No docs on how to use port filter on overlay network?? Question for Dave
-
-Port filter example in Bridge mode is slightly confusing. For example, Bridge network is restricted to single host. So why would somebody 
-create a Swarm with bridge network? Even if you do, its not clear how Swarm would pick the right node with the available port, especially
-since all the ports are not even configured in an overlay network.
+# No docs on how to use port filter on overlay network?? 
+# TODO
 
 # Start one instance of Couchbase
 docker run -d --net=couchbase-net -p 8091-8093:8091-8093 -p 11210:11210 arungupta/couchbase-node
