@@ -75,15 +75,22 @@ done
 eval "$(docker-machine env --swarm swarm-master)"
 declare -a ip
 count=0
-for i in `docker ps -q`
-do
-  ip[$count]=`docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}' $i`
-  ((count++))
-done
+# for i in `docker ps -q`
+# do
+#   ip[$count]=`docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}' $i`
+#   ((count++))
+# done
+
+ip[$count]=`docker-machine ssh swarm-master "docker ps | grep couchbase" | awk '{ print $1 }' | xargs docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}'`
+# ip[$count]=$(ipAddress "swarm-master")
+((count++))
+ip[$count]=`docker-machine ssh swarm-node-01 "docker ps | grep couchbase" | awk '{ print $1 }' | xargs docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}'`
+((count++))
+ip[$count]=`docker-machine ssh swarm-node-02 "docker ps | grep couchbase" | awk '{ print $1 }' | xargs docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}'`
 
 echo ${ip[0]} .. ${ip[1]} .. ${ip[2]}
 
-# # Configure Couchbase cluster
+# Configure Couchbase cluster
 # curl -X POST -u Administrator:password http://IP1:8091/controller/addNode -d hostname=IP2 -d user=Administrator -d password=password -d services=kv,n1ql,index -o O1
 # {"otpNode":"ns_1@172.17.0.4"}
 # curl -X POST -u Administrator:password http://IP1:8091/controller/addNode -d hostname=IP3 -d user=Administrator -d password=password -d services=kv,n1ql,index -o O2
