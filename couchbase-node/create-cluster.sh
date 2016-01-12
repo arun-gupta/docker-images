@@ -71,24 +71,17 @@ do
     arungupta/couchbase-node
 done
 
-# Get IP address of the container on swarm-master
-# declare -a ip
-# count=0
-# for i in `docker ps -q`
-# do
-#   ${ip[$count]}=`docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}' $i`
-#   ((count++))
-# done
+# Get IP address of the Couchbase containers from Docker Swarm
+eval "$(docker-machine env --swarm swarm-master)"
+declare -a ip
+count=0
+for i in `docker ps -q`
+do
+  ip[$count]=`docker inspect --format '{{ index .NetworkSettings.Ports "8091/tcp" 0 "HostIp" }}' $i`
+  ((count++))
+done
 
-# echo ${ip[@]}
-
-# IP1=
-
-# # Get IP address of the container on swarm-node-01
-# IP2
-
-# # Get IP address of the container on swarm-node-02
-# IP3
+echo ${ip[0]} .. ${ip[1]} .. ${ip[2]}
 
 # # Configure Couchbase cluster
 # curl -X POST -u Administrator:password http://IP1:8091/controller/addNode -d hostname=IP2 -d user=Administrator -d password=password -d services=kv,n1ql,index -o O1
