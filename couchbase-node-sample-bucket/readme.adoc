@@ -1,102 +1,13 @@
-= Couchbase Cluster using Docker
+= Load a sample bucket in Couchbase
 
 Build the image (only for dev, otherwise already available in Docker Hub):
 
 ```console
-docker build -t arungupta/couchbase-node .
+docker build -t arungupta/couchbase-node-sample-bucket .
 ```
 
-== How to setup cluster
+This image will:
 
-=== Start Consul
-
-. Create a machine for Consul:
-
-  docker-machine create -d=virtualbox consul-machine
-
-. Use http://github.com/arun-gupta/docker-images/blob/master/consul/docker-compose.yml and start Consul:
-
-  docker-compose up -d
-
-=== Create Docker Swarm Cluster
-
-. Create master:
-
-  docker-machine create -d virtualbox --virtualbox-disk-size "5000" --swarm --swarm-master --swarm-discovery="consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-store=consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-master
-
-. Create node-01:
-
-  docker-machine create -d virtualbox --virtualbox-disk-size "5000" --swarm --swarm-discovery="consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-store=consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-node-01
-
-. Create node-02:
-
-  docker-machine create -d virtualbox --virtualbox-disk-size "5000" --swarm --swarm-discovery="consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-store=consul://$(docker-machine ip consul-machine):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-node-02
-
-. Connect to Swarm:
-
-  eval "$(docker-machine env --swarm swarm-master)"
-
-. Use Compose file from http://github.com/arun-gupta/docker-images/blob/master/couchbase-node/docker-compose.yml, and run three instances of container:
-
-  docker-compose --x-networking up -d
-  docker-compose scale mycouchbase=3
-
-.. Question: All three containers end up running on node-02. Why?
-. Login to node-02:
-
-  docker-machine ssh swarm-node-02
-
-.. Question: None of the ports are exposed and so have to login to configure Couchbase servers. How can I expose the ports (without conflict) and configure them from the client?
-. Get IP address of all the Couchbase containers:
-
-  docker inspect --format '{{ .NetworkSettings.IPAddress }}' {CID}
-
-. Create the cluster:
-
-  curl -X POST -u Administrator:password http://172.17.0.3:8091/controller/addNode -d hostname=172.17.0.4 -d user=Administrator -d password=password -d services=kv,n1ql,index
-  {"otpNode":"ns_1@172.17.0.4"}
-  curl -X POST -u Administrator:password http://172.17.0.3:8091/controller/addNode -d hostname=172.17.0.5 -d user=Administrator -d password=password -d services=kv,n1ql,index
-  {"otpNode":"ns_1@172.17.0.5"}
-
-. Rebalance the cluster:
-+
-[source, text]
-----
-curl -v -X POST -u Administrator:password http://172.17.0.3:8091/controller/rebalance --data 'knownNodes=ns_1%40172.17.0.3%2Cns_1%40172.17.0.4 %2Cns_1%40172.17.0.5&ejectedNodes='
-* About to connect() to 172.17.0.3 port 8091 (#0)
-*   Trying 172.17.0.3...
-* Adding handle: conn: 0xb213c0
-* Adding handle: send: 0
-* Adding handle: recv: 0
-* Curl_addHandleToPipeline: length: 1
-* - Conn 0 (0xb213c0) send_pipe: 1, recv_pipe: 0
-* Connected to 172.17.0.3 (172.17.0.3) port 8091 (#0)
-* Server auth using Basic with user 'Administrator'
-> POST /controller/rebalance HTTP/1.1
-> Authorization: Basic QWRtaW5pc3RyYXRvcjpwYXNzd29yZA==
-> User-Agent: curl/7.33.0
-> Host: 172.17.0.3:8091
-> Accept: */*
-> Content-Length: 82
-> Content-Type: application/x-www-form-urlencoded
->
-* upload completely sent off: 82 out of 82 bytes
-< HTTP/1.1 200 OK
-* Server Couchbase Server is not blacklisted
-< Server: Couchbase Server
-< Pragma: no-cache
-< Date: Tue, 22 Dec 2015 00:32:38 GMT
-< Content-Length: 0
-< Cache-Control: no-cache
-<
-* Connection #0 to host 172.17.0.3 left intact
-----
-
-Questions:
-
-. 8091 and 8093 ports need to be exposed in order for the application to access the cluster. It can be from one container, ideally all of them. What do you recommend so that there is no port conflict?
-. How do I ensure that only one instance of Couchbase container is started on Docker Swarm node? Scheduling strategy?
-. Are there any pre/post scripts that can be automatically run after Compose scaling? Otherwise scaling would always require manual script invocation.
-. How do other databases scale, e.g. MySQL? Any existing recipes?
-
+- Configure a Couchbase node
+- Load a sample bucket from the data in `data` directory
 
