@@ -1,7 +1,7 @@
 FROM couchbase
 
-COPY create-load-bucket.sh /opt/couchbase
-COPY data /opt/couchbase
+COPY load-bucket.sh /opt/couchbase
+COPY data /opt/couchbase/data
 
-CMD ["/opt/couchbase/create-load-bucket.sh"]
+CMD ["/opt/couchbase/load-bucket.sh"]
 
