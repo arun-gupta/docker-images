@@ -1,0 +1,15 @@
+= Load a sample bucket in Couchbase
+
+Build the image (only for dev, otherwise already available in Docker Hub):
+
+```console
+docker build -t arungupta/couchbase-bucket .
+```
+
+This image:
+
+- Configures a Couchbase node
+- Download US zip code JSON sample data from http://jsonstudio.com/resources/
+- Creates multiple documents from this data
+- Loads this data in the `sample` bucket
+
