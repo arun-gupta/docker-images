@@ -14,6 +14,10 @@ docker build -t arungupta/couchbase-node .
 
   docker-machine create -d=virtualbox consul-machine
 
+. Connect to this Machine:
+
+  eval $(docker-machine env consul-machine)
+
 . Use http://github.com/arun-gupta/docker-images/blob/master/consul/docker-compose.yml and start Consul:
 
   docker-compose up -d
@@ -38,7 +42,8 @@ docker build -t arungupta/couchbase-node .
 
 . Use Compose file from http://github.com/arun-gupta/docker-images/blob/master/couchbase-node/docker-compose.yml, and run three instances of container:
 
-  docker-compose --x-networking scale mycouchbase=3
+  docker-compose --x-networking up -d
+  docker-compose scale mycouchbase=3
 
 .. Question: All three containers end up running on node-02. Why?
 . Login to node-02:
