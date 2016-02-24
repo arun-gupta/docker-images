@@ -18,7 +18,7 @@ docker build -t arungupta/couchbase-node .
 
   eval $(docker-machine env consul-machine)
 
-. Use http://github.com/arun-gupta/docker-images/blob/master/consul/docker-compose.yml and start Consul:
+. Use http://github.com/arun-gupta/docker-images/blob/master/consul/docker-compose.yml[Docker Compose for Consul] and start Consul:
 
   docker-compose up -d
 
@@ -40,28 +40,32 @@ docker build -t arungupta/couchbase-node .
 
   eval "$(docker-machine env --swarm swarm-master)"
 
-. Use Compose file from http://github.com/arun-gupta/docker-images/blob/master/couchbase-node/docker-compose.yml, and run three instances of container:
+. Use Compose file from link:docker-compose.yml[], and run three instances of container:
 
-  docker-compose --x-networking up -d
-  docker-compose scale mycouchbase=3
+  docker-compose up -d
+  docker-compose scale db=2
 
-.. Question: All three containers end up running on node-02. Why?
-. Login to node-02:
+. Check the Couchbase containers on Swarm:
++
+[source, text]
+----
+docker ps
+CONTAINER ID        IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                                                                                                                            NAMES
+08e3af15466f        arungupta/couchbase-node   "/entrypoint.sh /opt/"   36 seconds ago       Up 35 seconds       192.168.99.105:4369->4369/tcp, 192.168.99.105:8091-8093->8091-8093/tcp, 11207/tcp, 11211/tcp, 192.168.99.105:11210->11210/tcp, 18091-18092/tcp   swarm-node-02/couchbasenode_db_2
+6b8704a43e99        arungupta/couchbase-node   "/entrypoint.sh /opt/"   About a minute ago   Up About a minute   192.168.99.104:4369->4369/tcp, 192.168.99.104:8091-8093->8091-8093/tcp, 11207/tcp, 11211/tcp, 192.168.99.104:11210->11210/tcp, 18091-18092/tcp   swarm-node-01/couchbasenode_db_1
+----
++
+. Get IP address of all the Machines:
 
-  docker-machine ssh swarm-node-02
-
-.. Question: None of the ports are exposed and so have to login to configure Couchbase servers. How can I expose the ports (without conflict) and configure them from the client?
-. Get IP address of all the Couchbase containers:
-
-  docker inspect --format '{{ .NetworkSettings.IPAddress }}' {CID}
+  docker inspect --format '{{ .Node.IP }}' $(docker ps -q)
 
 . Create the cluster:
 
-  curl -X POST -u Administrator:password http://172.17.0.3:8091/controller/addNode -d hostname=172.17.0.4 -d user=Administrator -d password=password -d services=kv,n1ql,index
+  curl -X POST -u Administrator:password http://192.168.99.104:8091/controller/addNode -d hostname=192.168.99.105 -d user=Administrator -d password=password -d services=kv,n1ql,index
   {"otpNode":"ns_1@172.17.0.4"}
-  curl -X POST -u Administrator:password http://172.17.0.3:8091/controller/addNode -d hostname=172.17.0.5 -d user=Administrator -d password=password -d services=kv,n1ql,index
-  {"otpNode":"ns_1@172.17.0.5"}
-
+  
+  BROKEN HERE
+  
 . Rebalance the cluster:
 +
 [source, text]
