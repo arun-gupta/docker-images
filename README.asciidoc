@@ -1,32 +1,5 @@
-# Unofficial JBoss/WildFly Docker Images
+# Docker Images
 
-Official Docker images for JBoss projects are at https://github.com/jboss-dockerfiles/.
-
-## Common Instructions
-
-. Configure boot2docker as explained in http://blog.arungupta.me/2014/07/getting-started-with-docker/
-. `boot2docker ip` to obtain the IP
-
-## WildFly Images
-
-### Get WildFly images
-. From Docker Hub (recommended)
-.. For WildFly 8.2 on CentOS: `docker pull arungupta/wildfly-centos`
-.. For WildFly 8.2 on Ubuntu: `docker pull arungupta/wildfly-ubuntu`
-. From the workspace
-.. Clone this workspace: `git clone https://github.com/arun-gupta/docker-images.git`
-.. For a WildFly image on CentOS, change to `wildfly-centos' directory. For a WildFly image on Ubuntu, change to `wildfly-ubutu' directory.
-.. Build the image as `docker build -t wildfly .`
-
-### Run WildFly container
-. If you pulled from Docker Hub: `docker run -it arungupta/wildfly-centos` or `docker run -it arungupta/wildfly-ubuntu`
-. If you built it locally:  `docker run -it wildfly-centos` or `docker run -it wildfly-ubuntu`
-. Access WildFly at http://<IP>:8080
-
-## Java EE 7 Hands-on Lab
-
-. `docker pull arungupta/javaee7-hol`
-. `docker run -it -p 8080:8080 arungupta/javaee7-hol`
-. Access application at http://<IP>:8080/movieplex7
+Bunch of Docker images for fun
 
 
