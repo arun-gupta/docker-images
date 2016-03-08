@@ -14,6 +14,13 @@ spec:
       containers:
       - name: couchbase-worker
         image: arungupta/couchbase
+        env:
+          - name: TYPE
+            value: WORKER
+          - name: COUCHBASE_MASTER
+            value: SERVICE_IP_OF_MASTER
+          - name: AUTO_REBALANCE
+            value: true
         ports:
         - containerPort: 8091
 ----

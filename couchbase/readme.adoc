@@ -23,12 +23,18 @@ docker-compose up -d
 
 === Create Master RC
 
-kubectl.sh create -e TYPE=MASTER -f master-service.yml
+```
+kubectl.sh create -f master-service.yml
+```
 
 === Create Worker RC
 
-kubectl.sh create -e TYPE=WORKER -e COUCHBASE_MASTER=SERVICE_IP -e AUTO_REBALANCE=true -f worker-service.yml
+```
+kubectl.sh create -f worker-service.yml
+```
 
-==== Scale the cluster
+==== Scale cluster
 
+```
 kubectl.sh scale --replicas=3 -f worker-service.yml
+```
