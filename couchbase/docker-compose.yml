@@ -1,7 +1,9 @@
-mycouchbase:
-  image: arungupta/couchbase
-  ports:
-    - 8091:8091
-    - 8092:8092 
-    - 8093:8093 
-    - 11210:11210
+version: "2"
+services:
+  mycouchbase:
+    image: arungupta/couchbase
+    ports:
+      - 8091:8091
+      - 8092:8092
+      - 8093:8093
+      - 11210:11210

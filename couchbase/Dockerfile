@@ -1,6 +1,6 @@
 FROM couchbase
 
-COPY configure-cluster.sh /opt/couchbase
+COPY configure-node.sh /opt/couchbase
 
-CMD ["/opt/couchbase/configure-cluster.sh"]
+CMD ["/opt/couchbase/configure-node.sh"]
 

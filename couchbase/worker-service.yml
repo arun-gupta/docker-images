@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: couchbase-controller
+spec:
+  replicas: 1
+  selector:
+    app: couchbase-worker-pod
+  template:
+    metadata:
+      labels:
+        app: couchbase-worker-pod
+    spec:
+      containers:
+      - name: couchbase-worker
+        image: arungupta/couchbase
+        ports:
+        - containerPort: 8091
+----
+apiVersion: v1
+kind: Service
+metadata: 
+  name: couchbase-service
+  labels: 
+    app: couchbase-worker-service
+spec: 
+  ports:
+    - port: 8091
+  selector: 
+    app: couchbase-worker-pod
