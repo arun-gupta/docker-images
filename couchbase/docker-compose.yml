@@ -1,6 +1,6 @@
 version: "2"
 services:
-  mycouchbase:
+  db:
     image: arungupta/couchbase
     ports:
       - 8091:8091
