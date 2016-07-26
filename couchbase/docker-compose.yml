@@ -1,7 +1,7 @@
 version: "2"
 services:
   db:
-    image: CelsoSantos/couchbase
+    image: arungupta/couchbase
     ports:
       - 8091:8091
       - 8092:8092
