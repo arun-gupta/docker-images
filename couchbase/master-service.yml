@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: couchbase-master
-        image: celsosantos/couchbase
+        image: arungupta/couchbase
         env:
           - name: TYPE
             value: MASTER
