@@ -19,7 +19,7 @@ curl -i -u Administrator:password -X POST http://127.0.0.1:8091/settings/indexes
 # Load travel-sample bucket
 curl -v -u Administrator:password -X POST http://127.0.0.1:8091/sampleBuckets/install -d '["travel-sample"]'
 
-echo "Type: $TYPE
+echo "Type: $TYPE"
 
 if [ "$TYPE" = "WORKER" ]; then
   sleep 15
