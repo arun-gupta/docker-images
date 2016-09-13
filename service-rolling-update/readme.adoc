@@ -1,4 +1,4 @@
-= Two apps for service rolling updates
+= Two simple web applications for rolling updates
 
 . Create first image: `docker build -t arungupta/wildfly-app:1 app1`
 . Create second image: `docker build -t arungupta/wildfly-app:2 app2`
