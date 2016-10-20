@@ -1,0 +1,4 @@
+= Docker image using Oracle JDK
+
+. Download http://www.oracle.com/technetwork/java/javase/downloads/index.html[Oracle JDK] (Linux x64) and extract in this directory
+. Build the image as `docker build -t arungupta/jdk .`
