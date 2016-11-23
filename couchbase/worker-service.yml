@@ -20,7 +20,7 @@ spec:
           - name: COUCHBASE_MASTER
             value: SERVICE_IP_OF_MASTER
           - name: AUTO_REBALANCE
-            value: true
+            value: 'true'
         ports:
         - containerPort: 8091
 ----
