@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     image: arungupta/couchbase
+    network_mode: "host"
     ports:
       - 8091:8091
       - 8092:8092

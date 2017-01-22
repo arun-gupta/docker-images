@@ -1,0 +1,14 @@
+version: "3"
+services:
+  worker:
+    image: arungupta/couchbase
+    deploy:
+      replicas: 1
+    environment:
+      TYPE: "WORKER"
+      COUCHBASE_MASTER: "couchbase-master_master.couchbase-master_couchbase"
+      AUTO_REBALANCE: "false"
+networks:
+  default:
+    external:
+      name: couchbase-master_couchbase
