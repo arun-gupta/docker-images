@@ -19,22 +19,64 @@ docker build -t arungupta/couchbase .
 docker-compose up -d
 ```
 
-== Scalable Cluster (Kubernetes)
+== Cluster using Docker Services
 
-=== Create Master RC
+. Create network:
++
+```
+docker network create \
+-d overlay \
+couchbase
+```
++
+. Create master: 
++ 
+```
+docker service create \
+--name couchbase-master \
+--replicas 1 \
+-p 8091:8091 \
+--network couchbase \
+-e TYPE=MASTER \
+arungupta/couchbase
+```
++
+. Create worker
++
+```
+docker service create \
+--name couchbase-worker \
+--replicas 1 \
+--network couchbase \
+-e TYPE=WORKER \
+-e COUCHBASE_MASTER=couchbase-master.couchbase \
+-e AUTO_REBALANCE=false \
+arungupta/couchbase
+```
++
+. Scale cluster
++
+```
+docker service scale couchbase-worker=2
+```
 
+== Cluster using Kubernetes
+
+. Create Master RC
++
 ```
 kubectl.sh create -f master-service.yml
 ```
-
-=== Create Worker RC
-
++
+. Create Worker RC
++
 ```
 kubectl.sh create -f worker-service.yml
 ```
-
-==== Scale cluster
-
++
+. Scale cluster
++
 ```
 kubectl.sh scale --replicas=3 -f worker-service.yml
 ```
+
