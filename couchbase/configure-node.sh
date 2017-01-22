@@ -18,15 +18,17 @@ curl -v http://127.0.0.1:8091/settings/web -d port=8091 -d username=Administrato
 curl -i -u Administrator:password -X POST http://127.0.0.1:8091/settings/indexes -d 'storageMode=memory_optimized'
 
 # Load travel-sample bucket
-curl -v -u Administrator:password -X POST http://127.0.0.1:8091/sampleBuckets/install -d '["travel-sample"]'
+#curl -v -u Administrator:password -X POST http://127.0.0.1:8091/sampleBuckets/install -d '["travel-sample"]'
 
 echo "Type: $TYPE"
 
 if [ "$TYPE" = "WORKER" ]; then
+  echo "Sleeping ..."
   sleep 15
 
   #IP=`hostname -s`
   IP=`hostname -I | cut -d ' ' -f1`
+  echo "IP: " $IP
 
   echo "Auto Rebalance: $AUTO_REBALANCE"
   if [ "$AUTO_REBALANCE" = "true" ]; then
