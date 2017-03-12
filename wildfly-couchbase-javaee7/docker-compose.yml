@@ -8,7 +8,7 @@ services:
       - 8093:8093 
       - 11210:11210
   web:
-    image: arungupta/wildfly-couchbase-javaee7:travel
+    image: arungupta/wildfly-couchbase-javaee:travel
     environment:
       - COUCHBASE_URI=db
     ports:
