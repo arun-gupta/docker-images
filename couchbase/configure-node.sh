@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -x
 set -m
 
@@ -39,4 +41,3 @@ if [ "$TYPE" = "WORKER" ]; then
 fi;
 
 fg 1
-
