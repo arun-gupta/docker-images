@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -m
 
 /entrypoint.sh couchbase-server &
@@ -10,4 +12,3 @@ curl -v http://127.0.0.1:8091/settings/web -d port=8091 -d username=Administrato
 curl -v -u Administrator:password -X POST http://127.0.0.1:8091/sampleBuckets/install -d '["travel-sample"]'
 
 fg 1
-
